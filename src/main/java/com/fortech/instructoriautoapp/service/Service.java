@@ -2,76 +2,64 @@ package com.fortech.instructoriautoapp.service;
 
 import com.fortech.instructoriautoapp.exceptions.ExceptionMessages;
 import com.fortech.instructoriautoapp.exceptions.RepositoryException;
-import com.fortech.instructoriautoapp.model.Evaluare;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.support.Repositories;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.WebApplicationContext;
 
+import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 
 @Component
-public class Service<T> implements TestService<T> {
+public class Service<T> implements GenericService<T> {
     private final Repositories repositories;
-
-//    @Autowired
-//    List<Repo<T, Long>> lista;
-
+    private Class<T> entityBluePrint;
 
     @Autowired
-    public Service(WebApplicationContext applicationContext) throws NoSuchFieldException {
+    public Service(WebApplicationContext applicationContext) {
         this.repositories = new Repositories(applicationContext);
     }
 
     @Override
-    @SuppressWarnings("unchecked") //pentru a nu mai urla ca nu ii place cast JPA REPO
     public void create(T entity) {
-        //Todo: Metoda disticta - Un Repository Factory-> exporter
-        Object repository = repositories.getRepositoryFor(entity.getClass()).orElseThrow(() ->
-                new RepositoryException(ExceptionMessages.REPOSITORY_NOT_FOUND.errorMessage + entity.getClass()));
-        //Todo: poate de facut CRUD REPOS
-        JpaRepository<T, Long> crudRepository = (JpaRepository<T, Long>) repository;
-
-        crudRepository.save(entity);
+        repositoryProvider().save(entity);
     }
 
     @Override
     public List<T> readAll() {
-        return null;
+        return repositoryProvider().findAll();
     }
 
     @Override
     public T read(Long idEntity) {
-
-        return null;
+        Optional<T> foundOrNot = repositoryProvider().findById(idEntity);
+        return foundOrNot.orElseThrow(() ->
+                new RepositoryException(ExceptionMessages.ENTITY_WITH_GIVEN_ID_DOES_NOT_EXIST.errorMessage));
     }
-    public T readA(T entity){
-        Object repository = repositories.getRepositoryFor(entity.getClass()).orElseThrow(() ->
-                new RepositoryException(ExceptionMessages.REPOSITORY_NOT_FOUND.errorMessage + entity.getClass()));
-        //Todo: poate de facut CRUD REPOS
-        JpaRepository<T, Long> crudRepository = (JpaRepository<T, Long>) repository;
-        return crudRepository.findById(1L).get();
-    }
-
-
 
     @Override
+    @Transactional
     public void update(T entity) {
-        Object repository = repositories.getRepositoryFor(entity.getClass()).orElseThrow(() ->
-                new RepositoryException(ExceptionMessages.REPOSITORY_NOT_FOUND.errorMessage + entity.getClass()));
-        //Todo: poate de facut CRUD REPOS
-        JpaRepository<T, Long> crudRepository = (JpaRepository<T, Long>) repository;
-        crudRepository.save(entity);
-
+        repositoryProvider().save(entity);
     }
 
     @Override
     public void delete(Long idEntity) {
-        if (Service.class.isInstance(Evaluare.class)) {
-            System.out.println("bauaaauaua");
-        }
+        Optional<T> entityToDelete = repositoryProvider().findById(idEntity);
+        repositoryProvider().deleteById(idEntity);
+        //Todo: revenim aici
     }
 
+    public JpaRepository<T, Long> repositoryProvider() {
+        Object repository = repositories.getRepositoryFor(entityBluePrint).orElseThrow(() ->
+                new RepositoryException(ExceptionMessages.REPOSITORY_NOT_FOUND.errorMessage + entityBluePrint));
 
+        return (JpaRepository<T, Long>) repository;
+    }
+
+    public void setEntityBluePrint(Class<T> entityBluePrint) {
+        this.entityBluePrint = entityBluePrint;
+    }
 }
