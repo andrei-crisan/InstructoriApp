@@ -3,21 +3,23 @@ package com.fortech.instructoriautoapp.service;
 import com.fortech.instructoriautoapp.exceptions.ExceptionMessages;
 import com.fortech.instructoriautoapp.exceptions.RepositoryException;
 import com.fortech.instructoriautoapp.model.Evaluare;
-import com.fortech.instructoriautoapp.model.Scoala;
-import com.fortech.instructoriautoapp.repository.EvaluareRepository;
+import com.fortech.instructoriautoapp.repository.Repo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.support.Repositories;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.WebApplicationContext;
 
-import javax.transaction.Transactional;
 import java.util.List;
-import java.util.Optional;
 
 @Component
 public class Service<T> implements TestService<T> {
     private final Repositories repositories;
+
+//    @Autowired
+//    List<Repo<T, Long>> lista;
+
 
     @Autowired
     public Service(WebApplicationContext applicationContext) throws NoSuchFieldException {
@@ -27,6 +29,7 @@ public class Service<T> implements TestService<T> {
     @Override
     @SuppressWarnings("unchecked") //pentru a nu mai urla ca nu ii place cast JPA REPO
     public void create(T entity) {
+        //Todo: Metoda disticta - Un Repository Factory-> exporter
         Object repository = repositories.getRepositoryFor(entity.getClass()).orElseThrow(() ->
                 new RepositoryException(ExceptionMessages.REPOSITORY_NOT_FOUND.errorMessage + entity.getClass()));
         //Todo: poate de facut CRUD REPOS
@@ -45,6 +48,14 @@ public class Service<T> implements TestService<T> {
 
         return null;
     }
+    public T readA(T entity){
+        Object repository = repositories.getRepositoryFor(entity.getClass()).orElseThrow(() ->
+                new RepositoryException(ExceptionMessages.REPOSITORY_NOT_FOUND.errorMessage + entity.getClass()));
+        //Todo: poate de facut CRUD REPOS
+        JpaRepository<T, Long> crudRepository = (JpaRepository<T, Long>) repository;
+        return crudRepository.findById(1L).get();
+    }
+
 
 
     @Override

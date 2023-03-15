@@ -1,7 +1,8 @@
 package com.fortech.instructoriautoapp.repository;
 
 import com.fortech.instructoriautoapp.model.Evaluare;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Component;
 
-public interface EvaluareRepository extends JpaRepository<Evaluare, Long> {
+@Component("evaluareRepository")
+public interface EvaluareRepository extends Repo<Evaluare, Long> {
 }

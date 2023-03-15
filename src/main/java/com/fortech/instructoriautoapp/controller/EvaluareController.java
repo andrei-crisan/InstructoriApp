@@ -6,6 +6,7 @@ import com.fortech.instructoriautoapp.service.EvaluareService;
 import com.fortech.instructoriautoapp.service.Service;
 import com.fortech.instructoriautoapp.util.DtoConverter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +18,10 @@ import java.util.List;
 public class EvaluareController {
     @Autowired
     private EvaluareService evaluareService; // TODO: interfete pentru low coupling
+//    @Autowired
+//    private Service<Evaluare> eval;
+    @Autowired
+    private Service<Evaluare> servu;
 
     @Autowired
     private DtoConverter dtoConverter;
@@ -28,7 +33,8 @@ public class EvaluareController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Evaluare> getEvaluareById(@PathVariable Long id) {
-        return new ResponseEntity<>(evaluareService.read(id), HttpStatus.OK);
+        Evaluare evaluare = new Evaluare();
+        return new ResponseEntity<>(servu.readA(evaluare), HttpStatus.OK);
     }
 
     @GetMapping("/dto/{id}")

@@ -1,5 +1,6 @@
 package com.fortech.instructoriautoapp.config;
 
+import com.fortech.instructoriautoapp.exceptions.RepositoryException;
 import com.fortech.instructoriautoapp.model.Evaluare;
 import com.fortech.instructoriautoapp.model.Instructor;
 import com.fortech.instructoriautoapp.model.Scoala;
@@ -15,26 +16,26 @@ public class Console {
     CommandLineRunner commandLineRunner(Service<Evaluare> test, iService<Evaluare> evaluareService, iService<Instructor> instructorService, iService<Scoala> scoalaService) {
         return args -> {
             Scoala scoala = new Scoala();
-            scoala.setNumeScoala("Igor");
-            scoala.setAdresaScoala("sd, SV");
+            scoala.setNumeScoala("Acr");
+            scoala.setAdresaScoala("Drr, SV");
 
             Instructor instructor = new Instructor();
-            instructor.setNumeInstructor("Ucyugyr");
-            instructor.setPrenumeInstructor("Xxsd");
+            instructor.setNumeInstructor("Andri ");
+            instructor.setPrenumeInstructor("Crisan");
             instructor.getListaScoliSoferi().add(scoala);
             Evaluare eval = new Evaluare();
 
-//            Evaluare evaluare = new Evaluare();
-//            evaluare.setEvaluareInstructor("Un bnu");
-//            evaluare.setInstructor(instructor);
+            Evaluare evaluare = new Evaluare();
+            evaluare.setEvaluareInstructor("Good trainer");
+            evaluare.setInstructor(instructor);
 
 
 
-//        try {
-//            evaluareService.read(1L);
-//        }catch (RepositoryException e){
-//            e.printStackTrace();
-//        }
+        try {
+            evaluareService.create(evaluare);
+        }catch (RepositoryException e){
+            e.printStackTrace();
+        }
 
 //            instructorService.updateInstructor();
 
