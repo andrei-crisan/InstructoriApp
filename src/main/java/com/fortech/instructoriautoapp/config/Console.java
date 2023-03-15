@@ -26,7 +26,7 @@ public class Console {
             Evaluare eval = new Evaluare();
 
             Evaluare evaluare = new Evaluare();
-            evaluare.setEvaluareInstructor("Good trainer");
+            evaluare.setEvaluareInstructor("Good very very");
             evaluare.setInstructor(instructor);
 
 
