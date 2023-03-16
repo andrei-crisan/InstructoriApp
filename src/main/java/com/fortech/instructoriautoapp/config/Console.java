@@ -26,15 +26,16 @@ public class Console {
             Evaluare eval = new Evaluare();
 
             Evaluare evaluare = new Evaluare();
-            evaluare.setEvaluareInstructor("Un instructor slab");
+            evaluare.setEvaluareInstructor("Un instructor slab_02");
             evaluare.setRatingEvaluare(0);
             evaluare.setInstructor(instructor);
 
 
 
         try {
-            test.setEntityBluePrint(Evaluare.class);
-            test.create(evaluare);
+////            test.setEntityBluePrint(Evaluare.class);
+//            test.create(evaluare);
+            evaluareService.create(evaluare);
         }catch (RepositoryException e){
             e.printStackTrace();
         }
