@@ -17,6 +17,8 @@ public class Evaluare {
     private Long id;
     @Column(name="evaluare_instructor")
     private String evaluareInstructor;
+    @Column(name="rating_evaluare")
+    private Integer ratingEvaluare;
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JsonBackReference
     private Instructor instructor;
