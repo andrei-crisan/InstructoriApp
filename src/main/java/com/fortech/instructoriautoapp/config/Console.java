@@ -16,7 +16,7 @@ public class Console {
     CommandLineRunner commandLineRunner(Service<Evaluare> test, iService<Evaluare> evaluareService, iService<Instructor> instructorService, iService<Scoala> scoalaService) {
         return args -> {
             Scoala scoala = new Scoala();
-            scoala.setNumeScoala("Acr");
+            scoala.setNumeScoala("Tony Auto");
             scoala.setAdresaScoala("Drr, SV");
 
             Instructor instructor = new Instructor();
@@ -26,13 +26,15 @@ public class Console {
             Evaluare eval = new Evaluare();
 
             Evaluare evaluare = new Evaluare();
-            evaluare.setEvaluareInstructor("Good very very");
+            evaluare.setEvaluareInstructor("Un instructor slab");
+            evaluare.setRatingEvaluare(0);
             evaluare.setInstructor(instructor);
 
 
 
         try {
-            evaluareService.create(evaluare);
+            test.setEntityBluePrint(Evaluare.class);
+            test.create(evaluare);
         }catch (RepositoryException e){
             e.printStackTrace();
         }

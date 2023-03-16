@@ -2,6 +2,7 @@ package com.fortech.instructoriautoapp.service;
 
 import com.fortech.instructoriautoapp.exceptions.ExceptionMessages;
 import com.fortech.instructoriautoapp.exceptions.RepositoryException;
+import com.fortech.instructoriautoapp.model.Instructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.support.Repositories;
@@ -23,7 +24,11 @@ public class Service<T> implements GenericService<T> {
     }
 
     @Override
+    @Transactional
     public void create(T entity) {
+        //Todo: Adaugam un review la acelasi instructor daca el exista in DB!
+        Optional<T> instructor = repositoryProvider().findById(2L);
+
         repositoryProvider().save(entity);
     }
 
