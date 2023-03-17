@@ -14,27 +14,29 @@ import java.util.List;
 @Setter
 @ToString
 @Entity
-@Table(name = "instructori")
+@Table(name = "instructors")
 public class Instructor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String numeInstructor;
-    private String prenumeInstructor;
+    @Column(name="instructor_name")
+    private String instructorName;
+    @Column(name="instructor_surname")
+    private String instructorSurname;
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "instructor")
     @JsonManagedReference
-    private List<Evaluare> evaluariPrimite;
+    private List<Review> reviews;
     @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
-    @JoinTable(name="instructori_scoli",
-            joinColumns = @JoinColumn(name="instructor_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name="scoala_id", referencedColumnName = "id"))
+    @JoinTable(name = "instructors_driving_schools",
+            joinColumns = @JoinColumn(name = "instructor_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "driving_school_id", referencedColumnName = "id"))
     @JsonBackReference
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    private List<Scoala> listaScoliSoferi = new ArrayList<>();
+    private List<DrivingSchool> drivingSchools = new ArrayList<>();
 
-    public void adaugaApartenentaScoala(Scoala scoala) {
-        listaScoliSoferi.add(scoala);
+    public void addOneMoreDrivingSchool(DrivingSchool drivingSchool) {
+        drivingSchools.add(drivingSchool);
     }
 
     //Todo: REMOVE ONE ITEM FROM LIST, METHOD, IN FIECARE ENTITATE.
@@ -42,7 +44,7 @@ public class Instructor {
 
     //rescriere metoda pentru comparatii obiecte la adaugare.
     public boolean equals(Instructor instructor) {
-        return this.numeInstructor.equals(instructor.numeInstructor) &&
-                this.prenumeInstructor.equals(instructor.prenumeInstructor);
+        return this.instructorName.equals(instructor.instructorName) &&
+                this.instructorSurname.equals(instructor.instructorSurname);
     }
 }

@@ -1,17 +1,17 @@
 package com.fortech.instructoriautoapp.util;
 
-import com.fortech.instructoriautoapp.dto.EvaluareDto;
-import com.fortech.instructoriautoapp.model.Evaluare;
+import com.fortech.instructoriautoapp.dto.ReviewDto;
+import com.fortech.instructoriautoapp.model.Review;
 import org.springframework.stereotype.Component;
 
 
 @Component
 public class DtoConverter {
 
-    public EvaluareDto evaluareToDto(Evaluare evaluare){
-        return new EvaluareDto(evaluare.getEvaluareInstructor(),
-                evaluare.getInstructor().getNumeInstructor(),
-                evaluare.getInstructor().getPrenumeInstructor(), evaluare.getRatingEvaluare());
+    public ReviewDto evaluareToDto(Review review){
+        return new ReviewDto(review.getInstructorReview(),
+                review.getInstructor().getInstructorName(),
+                review.getInstructor().getInstructorSurname(), review.getExperienceRating());
     }
     //Todo: Converter from DTO to Evaluare and other entities;
 

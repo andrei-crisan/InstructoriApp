@@ -1,4 +1,5 @@
 package com.fortech.instructoriautoapp.dto;
 
-public class ScoalaDtos {
+public class DrivingSchoolDto {
+
 }

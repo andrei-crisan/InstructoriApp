@@ -2,7 +2,6 @@ package com.fortech.instructoriautoapp.service;
 
 import com.fortech.instructoriautoapp.exceptions.ExceptionMessages;
 import com.fortech.instructoriautoapp.exceptions.RepositoryException;
-import com.fortech.instructoriautoapp.model.Instructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.support.Repositories;
@@ -14,12 +13,12 @@ import java.util.List;
 import java.util.Optional;
 
 @Component
-public class Service<T> implements GenericService<T> {
+public class ServiceImpl<T> implements GenericService<T> {
     private final Repositories repositories;
     private Class<T> entityBluePrint;
 
     @Autowired
-    public Service(WebApplicationContext applicationContext) {
+    public ServiceImpl(WebApplicationContext applicationContext) {
         this.repositories = new Repositories(applicationContext);
     }
 
