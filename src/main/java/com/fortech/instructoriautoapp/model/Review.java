@@ -10,15 +10,15 @@ import javax.persistence.*;
 @Setter
 @ToString
 @Entity
-@Table(name="evaluari")
-public class Evaluare {
+@Table(name="reviews")
+public class Review {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name="evaluare_instructor")
-    private String evaluareInstructor;
-    @Column(name="rating_evaluare")
-    private Integer ratingEvaluare;
+    @Column(name="instructor_review")
+    private String instructorReview;
+    @Column(name="experience_rating")
+    private Integer experienceRating;
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JsonBackReference
     private Instructor instructor;

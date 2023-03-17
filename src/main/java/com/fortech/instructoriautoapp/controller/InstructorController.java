@@ -1,8 +1,7 @@
 package com.fortech.instructoriautoapp.controller;
 
 import com.fortech.instructoriautoapp.model.Instructor;
-import com.fortech.instructoriautoapp.service.InstructorService;
-import com.fortech.instructoriautoapp.service.Service;
+import com.fortech.instructoriautoapp.service.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,34 +10,36 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/instructori")
+@RequestMapping("/instructors")
 public class InstructorController {
-//    @Autowired
+    //    @Autowired
 //    private InstructorService instructorService;
     @Autowired
-    private Service<Instructor> instructorService;
+    private ServiceImpl<Instructor> instructorServiceImpl;
 
     @GetMapping()
-    public List<Instructor> getAllInstructori() {
-        instructorService.setEntityBluePrint(Instructor.class);
-        return instructorService.readAll();
+    public List<Instructor> getAllInstructors() {
+        instructorServiceImpl.setEntityBluePrint(Instructor.class);
+        return instructorServiceImpl.readAll();
     }
+
     @PostMapping()
-    public Instructor addInstructor(@RequestBody Instructor instructor){
-        instructorService.setEntityBluePrint(Instructor.class);
-        instructorService.create(instructor);
+    public Instructor addInstructor(@RequestBody Instructor instructor) {
+        instructorServiceImpl.setEntityBluePrint(Instructor.class);
+        instructorServiceImpl.create(instructor);
         return instructor;
     }
-    @DeleteMapping("/sterge/{id}")
-    public void deleteInstructor(@PathVariable Long id){
-        instructorService.setEntityBluePrint(Instructor.class);
-        instructorService.delete(id);
+
+    @DeleteMapping("/delete/{id}")
+    public void deleteInstructor(@PathVariable Long id) {
+        instructorServiceImpl.setEntityBluePrint(Instructor.class);
+        instructorServiceImpl.delete(id);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Instructor> getEvaluareById(@PathVariable Long id) {
-        instructorService.setEntityBluePrint(Instructor.class);
-        return new ResponseEntity<>(instructorService.read(id), HttpStatus.OK);
+    public ResponseEntity<Instructor> getReviewById(@PathVariable Long id) {
+        instructorServiceImpl.setEntityBluePrint(Instructor.class);
+        return new ResponseEntity<>(instructorServiceImpl.read(id), HttpStatus.OK);
     }
 
 }

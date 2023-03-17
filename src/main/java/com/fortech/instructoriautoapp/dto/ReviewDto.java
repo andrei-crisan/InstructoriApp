@@ -7,11 +7,11 @@ import lombok.*;
 @ToString
 @Getter
 @Setter
-public class EvaluareDto {
-    private String numeInstructor;
-    private String prenumeInstructor;
-    private String evaluareInstructor;
-    private Integer ratingEvaluare;
+public class ReviewDto {
+    private String nameInstructor;
+    private String surnameInstructor;
+    private String reviewInstructor;
+    private Integer reviewRating;
 
     //Todo: preluare si id - nu va fi afisat in front; poate alta ordine fielduri;
 }
