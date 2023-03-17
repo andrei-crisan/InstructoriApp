@@ -1,11 +1,12 @@
 package com.fortech.instructoriautoapp.service;
 
 import com.fortech.instructoriautoapp.exceptions.ExceptionMessages;
-import com.fortech.instructoriautoapp.exceptions.RepositoryException;
+import com.fortech.instructoriautoapp.exceptions.ServiceException;
+import com.fortech.instructoriautoapp.model.DrivingSchool;
 import com.fortech.instructoriautoapp.model.Instructor;
 import com.fortech.instructoriautoapp.model.Review;
 import com.fortech.instructoriautoapp.repository.DrivingSchoolRepository;
-import com.fortech.instructoriautoapp.repository.Repository;
+import com.fortech.instructoriautoapp.repository.InstructorRepository;
 import com.fortech.instructoriautoapp.repository.ReviewRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,25 +21,39 @@ public class ReviewServiceImpl implements iService<Review> {
     private ReviewRepository reviewRepository;
 
     @Autowired
-    private Repository<Instructor, Long> instructorRepository;
+    private InstructorRepository instructorRepository;
+    @Autowired
+    private DrivingSchoolRepository drivingSchoolRepository;
 
     @Override
     @Transactional
     public void create(Review entity) {
-        //Todo: Adaugam un review la acelasi instructor daca el exista in DB!
-        Optional<Instructor> instructor = instructorRepository.findById(2L);
-        if(reviewRepository.existsByInstructorReviewAndInstructor_InstructorName(entity.getInstructorReview(),
-                entity.getInstructor().getInstructorName())){
-            System.out.println("baaaaaa");
-        }
-        if (instructor.isPresent()) {
-            if (entity.getInstructor().equals(instructor.get())) {
-                System.out.println("Inseamna ca ei DB, deci il preluam din DB");
-                entity.setInstructor(instructor.get());
-            }
+        //If the instructor from our review already exits, we are just adding the review to his list;
+        //Avoiding duplicate instructors;
+
+        //DB_CHECK
+        Optional<Instructor> instructorToBeFound = instructorRepository.findByInstructorNameAndInstructorSurnameAndDrivingSchool_DrivingSchoolNameAndDrivingSchool_DrivingSchoolAddress(
+                        entity.getInstructor().getInstructorName(),
+                        entity.getInstructor().getInstructorSurname(),
+                        entity.getInstructor().getDrivingSchool().getDrivingSchoolName(),
+                        entity.getInstructor().getDrivingSchool().getDrivingSchoolAddress());
+
+        Optional<DrivingSchool> drivingSchoolToBeFoundOrNot = drivingSchoolRepository.findDrivingSchoolByDrivingSchoolNameAndDrivingSchoolAddress(
+                entity.getInstructor().getDrivingSchool().getDrivingSchoolName(),
+                entity.getInstructor().getDrivingSchool().getDrivingSchoolAddress());
+
+        //check if the school already exits - do not add a new school it's already in the DB;
+        drivingSchoolToBeFoundOrNot.ifPresent( //Todo: Verificare conditie, potentiele problem.
+                drivingSchool -> entity.getInstructor().setDrivingSchool(drivingSchool));
+
+        //ADD the new review
+        if (instructorToBeFound.isPresent()) {
+            entity.setInstructor(instructorToBeFound.get());
+            instructorToBeFound.get().getReviews().add(entity);
+        } else{
+            reviewRepository.save(entity);
         }
 
-        reviewRepository.save(entity);
     }
 
     @Override
@@ -48,10 +63,10 @@ public class ReviewServiceImpl implements iService<Review> {
 
     @Override
     public Review read(Long entityId) {
-        Optional<Review> evaluareToBeFound = reviewRepository.findById(entityId);
+        Optional<Review> reviewToBeFound = reviewRepository.findById(entityId);
 
-        Review reviewFoundOrNot = evaluareToBeFound.orElseThrow(() ->
-                new RepositoryException(ExceptionMessages.ENTITY_WITH_GIVEN_ID_DOES_NOT_EXIST.errorMessage));
+        Review reviewFoundOrNot = reviewToBeFound.orElseThrow(() ->
+                new ServiceException(ExceptionMessages.ENTITY_WITH_GIVEN_ID_DOES_NOT_EXIST.errorMessage));
         return reviewFoundOrNot;
     }
 
@@ -61,10 +76,11 @@ public class ReviewServiceImpl implements iService<Review> {
         Optional<Review> reviewToBeFound = reviewRepository.findById(entity.getId());
 
         Review updatedReview = reviewToBeFound.orElseThrow(() ->
-                new RepositoryException(ExceptionMessages.ENTITY_WITH_GIVEN_ID_DOES_NOT_EXIST.errorMessage));
+                new ServiceException(ExceptionMessages.ENTITY_WITH_GIVEN_ID_DOES_NOT_EXIST.errorMessage));
 
         updatedReview.setInstructor(entity.getInstructor());
         updatedReview.setInstructorReview(entity.getInstructorReview());
+        updatedReview.setExperienceRating(entity.getExperienceRating());
 
         return updatedReview;
     }
@@ -72,10 +88,10 @@ public class ReviewServiceImpl implements iService<Review> {
     @Override
     @Transactional
     public void delete(Long entityId) {
-        Optional<Review> evaluareToBeFound = reviewRepository.findById(entityId);
+        Optional<Review> reviewToBeFound = reviewRepository.findById(entityId);
 
-        Review reviewFoundOrNot = evaluareToBeFound.orElseThrow(() ->
-                new RepositoryException(ExceptionMessages.ENTITY_WITH_GIVEN_ID_DOES_NOT_EXIST.errorMessage));
+        Review reviewFoundOrNot = reviewToBeFound.orElseThrow(() ->
+                new ServiceException(ExceptionMessages.ENTITY_WITH_GIVEN_ID_DOES_NOT_EXIST.errorMessage));
 
         reviewRepository.delete(reviewFoundOrNot);
     }
