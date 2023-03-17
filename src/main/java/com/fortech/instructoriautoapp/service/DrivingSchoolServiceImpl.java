@@ -19,8 +19,10 @@ public class DrivingSchoolServiceImpl implements iService<DrivingSchool> {
 
     @Override
     public void create(DrivingSchool entity) {
-        //Todo: verifica daca entitatea nu e null; si arunca exceptie;
-        //Todo: definire scoala unica?
+        boolean entityExistsInDb = drivingSchoolRepository.existsByDrivingSchoolNameAndDrivingSchoolAddress(entity.getDrivingSchoolName(), entity.getDrivingSchoolAddress());
+        if(entityExistsInDb){
+           throw new ServiceException(ExceptionMessages.ENTITY_WITH_GIVEN_ID_ALREADY_EXISTS.errorMessage);
+        }
         drivingSchoolRepository.save(entity);
     }
 

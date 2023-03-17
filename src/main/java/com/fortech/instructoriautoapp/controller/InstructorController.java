@@ -1,5 +1,6 @@
 package com.fortech.instructoriautoapp.controller;
 
+import com.fortech.instructoriautoapp.exceptions.ServiceException;
 import com.fortech.instructoriautoapp.model.Instructor;
 import com.fortech.instructoriautoapp.service.InstructorServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,20 +21,32 @@ public class InstructorController {
         return instructorServiceImpl.readAll();
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<Instructor> getInstructorById(@PathVariable Long id) {
+        return new ResponseEntity<>(instructorServiceImpl.read(id), HttpStatus.OK);
+    }
+
     @PostMapping()
-    public Instructor addInstructor(@RequestBody Instructor instructor) {
+    public Instructor saveInstructor(@RequestBody Instructor instructor) {
         instructorServiceImpl.create(instructor);
         return instructor;
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/rm/{id}")
     public void deleteInstructor(@PathVariable Long id) {
         instructorServiceImpl.delete(id);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Instructor> getReviewById(@PathVariable Long id) {
-        return new ResponseEntity<>(instructorServiceImpl.read(id), HttpStatus.OK);
+    @PutMapping
+    public ResponseEntity<Instructor> updateInstructor(@RequestBody Instructor instructor) {
+        try {
+            Instructor updatedInstructor = instructorServiceImpl.update(instructor);
+
+            return new ResponseEntity<>(updatedInstructor, HttpStatus.OK);
+        } catch (ServiceException e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
+        }
     }
 
 }

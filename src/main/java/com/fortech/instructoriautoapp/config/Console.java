@@ -12,28 +12,33 @@ import org.springframework.dao.DataIntegrityViolationException;
 @Configuration
 public class Console {
     @Bean
-    CommandLineRunner commandLineRunner(iService<Review> reviewService, iService<Instructor> instructorService, iService<DrivingSchool> scoalaService) {
+    CommandLineRunner commandLineRunner(iService<Review> reviewService, iService<Instructor> instructorService, iService<DrivingSchool> drivingSchoolService) {
         return args -> {
             DrivingSchool drivingSchool = new DrivingSchool();
-            drivingSchool.setDrivingSchoolName("ACR Auto");
-            drivingSchool.setDrivingSchoolAddress("AltaAdresas, SV");
+            drivingSchool.setDrivingSchoolName("Ralcua Auto");
+            drivingSchool.setDrivingSchoolAddress("ARuncuta, SV");
+//            drivingSchool.setId(4L);
 //
             Instructor instructor = new Instructor();
             instructor.setInstructorName("Vasile");
-            instructor.setInstructorSurname("Lombrea");
+            instructor.setInstructorSurname("Tudor");
+            instructor.setId(5L);
             instructor.setDrivingSchool(drivingSchool);
 
-            Review review = new Review();
-            review.setInstructorReview("lombritza nou!!");
-            review.setExperienceRating(2);
-            review.setInstructor(instructor);
+//            Review review = new Review();
+//            review.setInstructorReview("Eval_baisoara!");
+//            review.setExperienceRating(2);
+//            review.setInstructor(instructor);
+
 
 
 
         try {
 ////            test.setEntityBluePrint(Evaluare.class);
 //            test.create(evaluare);
-            reviewService.create(review);
+//            reviewSaervice.create(review);
+//            instructorService.update(instructor);
+            drivingSchoolService.create(drivingSchool);
         }catch (DataIntegrityViolationException e){
             System.out.println("Eceptie prinsa!!");
             e.printStackTrace();

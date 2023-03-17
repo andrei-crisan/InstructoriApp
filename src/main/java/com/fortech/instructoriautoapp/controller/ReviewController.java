@@ -1,6 +1,6 @@
 package com.fortech.instructoriautoapp.controller;
 
-import com.fortech.instructoriautoapp.dto.ReviewDto;
+import com.fortech.instructoriautoapp.exceptions.ServiceException;
 import com.fortech.instructoriautoapp.model.Review;
 import com.fortech.instructoriautoapp.service.ReviewServiceImpl;
 import com.fortech.instructoriautoapp.util.DtoConverter;
@@ -32,22 +32,34 @@ public class ReviewController {
         return new ResponseEntity<>(reviewServiceImpl.read(id), HttpStatus.OK);
     }
 
-    @GetMapping("/dto/{id}")
-    //Todo: Test method!!!
-    public ResponseEntity<ReviewDto> getEvaluareByIdDto(@PathVariable Long id) {
-        Review review = reviewServiceImpl.read(id);
-        return new ResponseEntity<>(dtoConverter.evaluareToDto(review), HttpStatus.OK);
-    }
-
-    @DeleteMapping("/delete/{id}")
-    public void deleteReview(@PathVariable Long id) {
-        reviewServiceImpl.delete(id);
-    }
+//    @GetMapping("/dto/{id}")
+//    //Todo: Test method!!!
+//    public ResponseEntity<ReviewDto> getEvaluareByIdDto(@PathVariable Long id) {
+//        Review review = reviewServiceImpl.read(id);
+//        return new ResponseEntity<>(dtoConverter.evaluareToDto(review), HttpStatus.OK);
+//    }
 
     @PostMapping()
-    public Review addReview(@RequestBody Review review) {
+    public Review saveReview(@RequestBody Review review) {
         reviewServiceImpl.create(review);
         return review;
+    }
+
+    @PutMapping
+    public ResponseEntity<Review> updateReview(@RequestBody Review review) {
+        try {
+            Review updatedReview = reviewServiceImpl.update(review);
+
+            return new ResponseEntity<>(updatedReview, HttpStatus.OK);
+        } catch (ServiceException e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
+        }
+    }
+
+    @DeleteMapping("/rm/{id}")
+    public void deleteReview(@PathVariable Long id) {
+        reviewServiceImpl.delete(id);
     }
 
 }

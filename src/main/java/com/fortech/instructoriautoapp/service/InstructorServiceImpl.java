@@ -4,8 +4,8 @@ import com.fortech.instructoriautoapp.exceptions.ExceptionMessages;
 import com.fortech.instructoriautoapp.exceptions.ServiceException;
 import com.fortech.instructoriautoapp.model.DrivingSchool;
 import com.fortech.instructoriautoapp.model.Instructor;
+import com.fortech.instructoriautoapp.repository.DrivingSchoolRepository;
 import com.fortech.instructoriautoapp.repository.InstructorRepository;
-import com.fortech.instructoriautoapp.repository.Repository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +17,8 @@ import java.util.Optional;
 public class InstructorServiceImpl implements iService<Instructor> {
     @Autowired
     private InstructorRepository instructorRepository;
+    @Autowired
+    private DrivingSchoolRepository drivingSchoolRepository;
 
     @Override
     public void create(Instructor entity) {
@@ -31,32 +33,31 @@ public class InstructorServiceImpl implements iService<Instructor> {
     @Override
     public Instructor read(Long entityId) {
         Optional<Instructor> instructorToBeFound = instructorRepository.findById(entityId);
-
         Instructor instructorFoundOrNot = instructorToBeFound.orElseThrow(() ->
                 new ServiceException(ExceptionMessages.ENTITY_WITH_GIVEN_ID_DOES_NOT_EXIST.errorMessage));
-        return instructorRepository.findById(entityId).get();
+
+        return instructorFoundOrNot;
     }
 
     @Override
     @Transactional
     public Instructor update(Instructor entity) {
-        Instructor instructorForUpdate = instructorRepository.findById(1L).get();
-//        List<DrivingSchool> listaNoua = instructorForUpdate.getDrivingSchools();
+        Optional<Instructor> instructorToBeFound = instructorRepository.findById(entity.getId());
+        Instructor instructorToBeUpdated = instructorToBeFound.orElseThrow(() ->
+                new ServiceException(ExceptionMessages.ENTITY_WITH_GIVEN_ID_DOES_NOT_EXIST.errorMessage));
 
-        DrivingSchool drivingSchool1 = new DrivingSchool();
-        drivingSchool1.setDrivingSchoolName("Timbuktu");
-        DrivingSchool drivingSchool2 = new DrivingSchool();
-        drivingSchool2.setDrivingSchoolName("Ilie");
-        DrivingSchool drivingSchool3 = new DrivingSchool();
-        drivingSchool3.setDrivingSchoolName("Pisica");
+        Optional<DrivingSchool> drivingSchoolToBeFound =
+                drivingSchoolRepository.findById(entity.getDrivingSchool().getId());
 
-//        listaNoua.add(drivingSchool2);
-//        listaNoua.add(drivingSchool1);
-//        listaNoua.add(drivingSchool3);
-//
-//        instructorForUpdate.setDrivingSchools(listaNoua);
-        //Todo: metoda nefinalizata | testing ongoing...
-        return null;
+        instructorToBeUpdated.setInstructorName(entity.getInstructorName());
+        instructorToBeUpdated.setInstructorSurname(entity.getInstructorSurname());
+        if (drivingSchoolToBeFound.isPresent()) {
+            instructorToBeUpdated.setDrivingSchool(drivingSchoolToBeFound.get());
+        } else {
+            instructorToBeUpdated.setDrivingSchool(drivingSchoolToBeFound.get());
+        }
+
+        return instructorToBeUpdated;
     }
 
     @Override
