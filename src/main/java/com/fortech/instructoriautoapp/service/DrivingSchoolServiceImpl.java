@@ -1,7 +1,7 @@
 package com.fortech.instructoriautoapp.service;
 
 import com.fortech.instructoriautoapp.exceptions.ExceptionMessages;
-import com.fortech.instructoriautoapp.exceptions.RepositoryException;
+import com.fortech.instructoriautoapp.exceptions.ServiceException;
 import com.fortech.instructoriautoapp.model.DrivingSchool;
 import com.fortech.instructoriautoapp.repository.DrivingSchoolRepository;
 import com.fortech.instructoriautoapp.repository.Repository;
@@ -15,11 +15,12 @@ import java.util.Optional;
 @Service
 public class DrivingSchoolServiceImpl implements iService<DrivingSchool> {
     @Autowired
-    private Repository<DrivingSchool, Long> drivingSchoolRepository;
+    private DrivingSchoolRepository drivingSchoolRepository;
 
     @Override
     public void create(DrivingSchool entity) {
         //Todo: verifica daca entitatea nu e null; si arunca exceptie;
+        //Todo: definire scoala unica?
         drivingSchoolRepository.save(entity);
     }
 
@@ -30,9 +31,10 @@ public class DrivingSchoolServiceImpl implements iService<DrivingSchool> {
 
     @Override
     public DrivingSchool read(Long entityId) {
-        Optional<DrivingSchool> scoalaToBeFound = drivingSchoolRepository.findById(entityId);
-        DrivingSchool drivingSchoolFoundOrNot = scoalaToBeFound.orElseThrow(() ->
-                new RepositoryException(ExceptionMessages.ENTITY_WITH_GIVEN_ID_DOES_NOT_EXIST.errorMessage));
+        Optional<DrivingSchool> drivingSchoolToBeFound = drivingSchoolRepository.findById(entityId);
+
+        DrivingSchool drivingSchoolFoundOrNot = drivingSchoolToBeFound.orElseThrow(() ->
+                new ServiceException(ExceptionMessages.ENTITY_WITH_GIVEN_ID_DOES_NOT_EXIST.errorMessage));
 
         return drivingSchoolFoundOrNot;
     }
@@ -42,7 +44,7 @@ public class DrivingSchoolServiceImpl implements iService<DrivingSchool> {
     public DrivingSchool update(DrivingSchool entity) {
         Optional<DrivingSchool> scoalaToBeFound = drivingSchoolRepository.findById(entity.getId());
         DrivingSchool drivingSchoolFoundOrNot = scoalaToBeFound.orElseThrow(() ->
-                new RepositoryException(ExceptionMessages.ENTITY_WITH_GIVEN_ID_DOES_NOT_EXIST.errorMessage));
+                new ServiceException(ExceptionMessages.ENTITY_WITH_GIVEN_ID_DOES_NOT_EXIST.errorMessage));
 
         //Todo:Atentie, aici folosim id la update citire scoala in cod
         drivingSchoolFoundOrNot.setDrivingSchoolName(entity.getDrivingSchoolName());
@@ -59,8 +61,9 @@ public class DrivingSchoolServiceImpl implements iService<DrivingSchool> {
     @Transactional
     public void delete(Long entityId) {
         Optional<DrivingSchool> drivingSchoolInDb = drivingSchoolRepository.findById(entityId);
+
         DrivingSchool drivingSchoolFoundOrNot = drivingSchoolInDb.orElseThrow(() ->
-                new RepositoryException(ExceptionMessages.ENTITY_WITH_GIVEN_ID_DOES_NOT_EXIST.errorMessage));
+                new ServiceException(ExceptionMessages.ENTITY_WITH_GIVEN_ID_DOES_NOT_EXIST.errorMessage));
 
         drivingSchoolRepository.delete(drivingSchoolFoundOrNot);
     }

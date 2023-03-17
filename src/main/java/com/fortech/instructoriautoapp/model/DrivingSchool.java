@@ -13,18 +13,21 @@ import java.util.List;
 @Setter
 @ToString
 @Entity
-@Table(name = "driving_schools")
+//@Table(name = "driving_schools",
+//        uniqueConstraints=@UniqueConstraint(columnNames={"school_name", "school_address"}))
 public class DrivingSchool {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(name = "school_name")
     private String drivingSchoolName;
     @Column(name = "school_address")
     private String drivingSchoolAddress;
-    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, mappedBy = "drivingSchools")
+    @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, mappedBy = "drivingSchool")
     @JsonManagedReference
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     private List<Instructor> instructors = new ArrayList<>();
+
+
 }

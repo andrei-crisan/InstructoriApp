@@ -19,7 +19,7 @@ public class Review {
     private String instructorReview;
     @Column(name="experience_rating")
     private Integer experienceRating;
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JsonBackReference
     private Instructor instructor;
 
