@@ -27,10 +27,18 @@ public class InstructorServiceImpl implements iService<Instructor> {
                 entity.getInstructorSurname(),
                 entity.getDrivingSchool().getDrivingSchoolName(),
                 entity.getDrivingSchool().getDrivingSchoolAddress());
-
+        //Todo: Daca instructor nu exista, dar exista scoala, atunci atribuie scoala!s
         if (instructorToBeFound.isPresent()) {
             throw new ServiceException(ExceptionMessages.INSTRUCTOR_WITH_THE_GIVEN_IDENTIFIERS_ALREADY_EXISTS.errorMessage);
         } else {
+            Optional<DrivingSchool> drivingSchoolToBeFound = drivingSchoolRepository.findDrivingSchoolByDrivingSchoolNameAndDrivingSchoolAddress(
+                    entity.getDrivingSchool().getDrivingSchoolName(),
+                    entity.getDrivingSchool().getDrivingSchoolAddress());
+
+            if(drivingSchoolToBeFound.isPresent()){
+                entity.setDrivingSchool(drivingSchoolToBeFound.get());
+            }
+
             instructorRepository.save(entity);
         }
     }

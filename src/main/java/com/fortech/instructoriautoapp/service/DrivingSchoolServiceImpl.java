@@ -21,7 +21,7 @@ public class DrivingSchoolServiceImpl implements iService<DrivingSchool> {
     public void create(DrivingSchool entity) {
         boolean entityExistsInDb = drivingSchoolRepository.existsByDrivingSchoolNameAndDrivingSchoolAddress(entity.getDrivingSchoolName(), entity.getDrivingSchoolAddress());
         if(entityExistsInDb){
-           throw new ServiceException(ExceptionMessages.ENTITY_WITH_GIVEN_ID_ALREADY_EXISTS.errorMessage);
+           throw new ServiceException(ExceptionMessages.DRIVING_SCHOOL_WITH_GIVEN_IDENTIFIERS_ALREADY_EXISTS.errorMessage);
         }
         drivingSchoolRepository.save(entity);
     }
