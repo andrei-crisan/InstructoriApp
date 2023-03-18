@@ -27,6 +27,7 @@ public class DrivingSchoolController {
     }
 
     @PostMapping()
+    @CrossOrigin(origins = "http://localhost:4200/")
     public DrivingSchool saveDrivingSchool(@RequestBody DrivingSchool drivingSchool) {
         try {
             drivingSchoolServiceImpl.create(drivingSchool);

@@ -27,6 +27,7 @@ public class InstructorController {
     }
 
     @PostMapping()
+    @CrossOrigin(origins = "http://localhost:4200/")
     public Instructor saveInstructor(@RequestBody Instructor instructor) {
         instructorServiceImpl.create(instructor);
         return instructor;

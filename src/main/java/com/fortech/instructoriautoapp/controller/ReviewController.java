@@ -40,6 +40,7 @@ public class ReviewController {
 //    }
 
     @PostMapping()
+    @CrossOrigin(origins = "http://localhost:4200/")
     public Review saveReview(@RequestBody Review review) {
         reviewServiceImpl.create(review);
         return review;

@@ -22,7 +22,17 @@ public class InstructorServiceImpl implements iService<Instructor> {
 
     @Override
     public void create(Instructor entity) {
-        instructorRepository.save(entity);
+        Optional<Instructor> instructorToBeFound = instructorRepository.findByInstructorNameAndInstructorSurnameAndDrivingSchool_DrivingSchoolNameAndDrivingSchool_DrivingSchoolAddress(
+                entity.getInstructorName(),
+                entity.getInstructorSurname(),
+                entity.getDrivingSchool().getDrivingSchoolName(),
+                entity.getDrivingSchool().getDrivingSchoolAddress());
+
+        if (instructorToBeFound.isPresent()) {
+            throw new ServiceException(ExceptionMessages.INSTRUCTOR_WITH_THE_GIVEN_IDENTIFIERS_ALREADY_EXISTS.errorMessage);
+        } else {
+            instructorRepository.save(entity);
+        }
     }
 
     @Override

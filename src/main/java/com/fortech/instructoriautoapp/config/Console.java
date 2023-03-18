@@ -21,9 +21,9 @@ public class Console {
 //
             Instructor instructor = new Instructor();
             instructor.setInstructorName("Vasile");
-            instructor.setInstructorSurname("Tudor");
-            instructor.setId(5L);
-            instructor.setDrivingSchool(drivingSchool);
+            instructor.setInstructorSurname("Babuin");
+//            instructor.setId(5L);
+//            instructor.setDrivingSchool(drivingSchool);
 
 //            Review review = new Review();
 //            review.setInstructorReview("Eval_baisoara!");
@@ -38,7 +38,8 @@ public class Console {
 //            test.create(evaluare);
 //            reviewSaervice.create(review);
 //            instructorService.update(instructor);
-            drivingSchoolService.create(drivingSchool);
+//            drivingSchoolService.create(drivingSchool);
+//            instructorService.create(instructor);
         }catch (DataIntegrityViolationException e){
             System.out.println("Eceptie prinsa!!");
             e.printStackTrace();
