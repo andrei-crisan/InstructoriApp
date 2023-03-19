@@ -58,7 +58,7 @@ public class InstructorServiceImpl implements iService<Instructor> {
     public Instructor read(Long entityId) {
         Optional<Instructor> instructorToBeFound = instructorRepository.findById(entityId);
         Instructor instructorFoundOrNot = instructorToBeFound.orElseThrow(() ->
-                new ServiceException(ExceptionMessages.ENTITY_WITH_GIVEN_ID_DOES_NOT_EXIST.errorMessage));
+                new ServiceException(ExceptionMessages.INSTRUCTOR_WITH_GIVEN_ID_DOES_NOT_EXIST.errorMessage));
 
         return instructorFoundOrNot;
     }
@@ -68,7 +68,7 @@ public class InstructorServiceImpl implements iService<Instructor> {
     public Instructor update(Instructor entity) {
         Optional<Instructor> instructorToBeFound = instructorRepository.findById(entity.getId());
         Instructor instructorToBeUpdated = instructorToBeFound.orElseThrow(() ->
-                new ServiceException(ExceptionMessages.ENTITY_WITH_GIVEN_ID_DOES_NOT_EXIST.errorMessage));
+                new ServiceException(ExceptionMessages.INSTRUCTOR_WITH_GIVEN_ID_DOES_NOT_EXIST.errorMessage));
 
         Optional<DrivingSchool> drivingSchoolToBeFound =
                 drivingSchoolRepository.findById(entity.getDrivingSchool().getId());
@@ -90,7 +90,7 @@ public class InstructorServiceImpl implements iService<Instructor> {
         Optional<Instructor> instructorToDelete = instructorRepository.findById(entityId);
 
         Instructor instructorFoundOrNot = instructorToDelete.orElseThrow(() ->
-                new ServiceException(ExceptionMessages.ENTITY_WITH_GIVEN_ID_DOES_NOT_EXIST.errorMessage));
+                new ServiceException(ExceptionMessages.INSTRUCTOR_WITH_GIVEN_ID_DOES_NOT_EXIST.errorMessage));
 
         instructorRepository.delete(instructorFoundOrNot);
     }

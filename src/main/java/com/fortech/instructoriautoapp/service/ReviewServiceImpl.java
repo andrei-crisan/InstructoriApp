@@ -69,7 +69,7 @@ public class ReviewServiceImpl implements iService<Review> {
         Optional<Review> reviewToBeFound = reviewRepository.findById(entityId);
 
         Review reviewFoundOrNot = reviewToBeFound.orElseThrow(() ->
-                new ServiceException(ExceptionMessages.ENTITY_WITH_GIVEN_ID_DOES_NOT_EXIST.errorMessage));
+                new ServiceException(ExceptionMessages.REVIEW_WITH_GIVEN_ID_DOES_NOT_EXIST.errorMessage));
         return reviewFoundOrNot;
     }
 
@@ -79,7 +79,7 @@ public class ReviewServiceImpl implements iService<Review> {
         Optional<Review> reviewToBeFound = reviewRepository.findById(entity.getId());
 
         Review updatedReview = reviewToBeFound.orElseThrow(() ->
-                new ServiceException(ExceptionMessages.ENTITY_WITH_GIVEN_ID_DOES_NOT_EXIST.errorMessage));
+                new ServiceException(ExceptionMessages.REVIEW_WITH_GIVEN_ID_DOES_NOT_EXIST.errorMessage));
 
         updatedReview.setInstructor(entity.getInstructor());
         updatedReview.setInstructorReview(entity.getInstructorReview());
@@ -94,7 +94,7 @@ public class ReviewServiceImpl implements iService<Review> {
         Optional<Review> reviewToBeFound = reviewRepository.findById(entityId);
 
         Review reviewFoundOrNot = reviewToBeFound.orElseThrow(() ->
-                new ServiceException(ExceptionMessages.ENTITY_WITH_GIVEN_ID_DOES_NOT_EXIST.errorMessage));
+                new ServiceException(ExceptionMessages.REVIEW_WITH_GIVEN_ID_DOES_NOT_EXIST.errorMessage));
 
         reviewRepository.delete(reviewFoundOrNot);
     }

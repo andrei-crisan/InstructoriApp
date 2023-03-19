@@ -43,7 +43,7 @@ public class DrivingSchoolServiceImpl implements iService<DrivingSchool> {
         Optional<DrivingSchool> drivingSchoolToBeFound = drivingSchoolRepository.findById(entityId);
 
         DrivingSchool drivingSchoolFoundOrNot = drivingSchoolToBeFound.orElseThrow(() ->
-                new ServiceException(ExceptionMessages.ENTITY_WITH_GIVEN_ID_DOES_NOT_EXIST.errorMessage));
+                new ServiceException(ExceptionMessages.DRIVING_SCHOOL_WITH_GIVEN_ID_DOES_NOT_EXIST.errorMessage));
 
         return drivingSchoolFoundOrNot;
     }
@@ -53,7 +53,7 @@ public class DrivingSchoolServiceImpl implements iService<DrivingSchool> {
     public DrivingSchool update(DrivingSchool entity) {
         Optional<DrivingSchool> scoalaToBeFound = drivingSchoolRepository.findById(entity.getId());
         DrivingSchool drivingSchoolFoundOrNot = scoalaToBeFound.orElseThrow(() ->
-                new ServiceException(ExceptionMessages.ENTITY_WITH_GIVEN_ID_DOES_NOT_EXIST.errorMessage));
+                new ServiceException(ExceptionMessages.DRIVING_SCHOOL_WITH_GIVEN_ID_DOES_NOT_EXIST.errorMessage));
 
         //Todo:Atentie, aici folosim id la update citire scoala in cod
         drivingSchoolFoundOrNot.setDrivingSchoolName(entity.getDrivingSchoolName());
@@ -72,7 +72,7 @@ public class DrivingSchoolServiceImpl implements iService<DrivingSchool> {
         Optional<DrivingSchool> drivingSchoolInDb = drivingSchoolRepository.findById(entityId);
 
         DrivingSchool drivingSchoolFoundOrNot = drivingSchoolInDb.orElseThrow(() ->
-                new ServiceException(ExceptionMessages.ENTITY_WITH_GIVEN_ID_DOES_NOT_EXIST.errorMessage));
+                new ServiceException(ExceptionMessages.DRIVING_SCHOOL_WITH_GIVEN_ID_DOES_NOT_EXIST.errorMessage));
 
         drivingSchoolRepository.delete(drivingSchoolFoundOrNot);
     }
