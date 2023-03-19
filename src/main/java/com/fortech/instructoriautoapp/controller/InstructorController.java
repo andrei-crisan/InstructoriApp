@@ -23,19 +23,39 @@ public class InstructorController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Instructor> getInstructorById(@PathVariable Long id) {
-        return new ResponseEntity<>(instructorServiceImpl.read(id), HttpStatus.OK);
+        try {
+            Instructor instructor = instructorServiceImpl.read(id);
+
+            return new ResponseEntity<>(instructor, HttpStatus.OK);
+        } catch (ServiceException e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @PostMapping()
     @CrossOrigin(origins = "http://localhost:4200/")
-    public Instructor saveInstructor(@RequestBody Instructor instructor) {
-        instructorServiceImpl.create(instructor);
-        return instructor;
+    public ResponseEntity<?> saveInstructor(@RequestBody Instructor instructor) {
+        try {
+            instructorServiceImpl.create(instructor);
+
+            new ResponseEntity<>(HttpStatus.OK);
+        } catch (ServiceException e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>(HttpStatus.FORBIDDEN);
     }
 
     @DeleteMapping("/rm/{id}")
-    public void deleteInstructor(@PathVariable Long id) {
-        instructorServiceImpl.delete(id);
+    public ResponseEntity<?> deleteInstructor(@PathVariable Long id) {
+        try {
+            instructorServiceImpl.delete(id);
+
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (ServiceException e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>(HttpStatus.FORBIDDEN);
     }
 
     @PutMapping
@@ -49,5 +69,4 @@ public class InstructorController {
             return new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
         }
     }
-
 }

@@ -23,23 +23,39 @@ public class DrivingSchoolController {
 
     @GetMapping("/{id}")
     public ResponseEntity<DrivingSchool> getDrivingSchoolById(@PathVariable Long id) {
-        return new ResponseEntity<>(drivingSchoolServiceImpl.read(id), HttpStatus.OK);
+        try {
+            DrivingSchool drivingSchool = drivingSchoolServiceImpl.read(id);
+
+            return new ResponseEntity<>(drivingSchool, HttpStatus.OK);
+        } catch (ServiceException e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @PostMapping()
     @CrossOrigin(origins = "http://localhost:4200/")
-    public DrivingSchool saveDrivingSchool(@RequestBody DrivingSchool drivingSchool) {
+    public ResponseEntity<?> saveDrivingSchool(@RequestBody DrivingSchool drivingSchool) {
         try {
             drivingSchoolServiceImpl.create(drivingSchool);
-        } catch(ServiceException e){
+
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (ServiceException e) {
             e.printStackTrace();
         }
-        return drivingSchool;
+        return new ResponseEntity<>(HttpStatus.FORBIDDEN);
     }
 
     @DeleteMapping("/rm/{id}")
-    public void deleteDrivingSchool(@PathVariable Long id) {
-        drivingSchoolServiceImpl.delete(id);
+    public ResponseEntity<?> deleteDrivingSchool(@PathVariable Long id) {
+        try {
+            drivingSchoolServiceImpl.delete(id);
+
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (ServiceException e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>(HttpStatus.FORBIDDEN);
     }
 
     @PutMapping
@@ -53,5 +69,4 @@ public class DrivingSchoolController {
             return new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
         }
     }
-
 }

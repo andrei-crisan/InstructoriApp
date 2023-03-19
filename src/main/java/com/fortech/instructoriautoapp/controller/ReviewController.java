@@ -14,7 +14,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/reviews")
 public class ReviewController {
-
+    //TODO: remove Field injection from controllers
     @Autowired
     private ReviewServiceImpl reviewServiceImpl;
 
@@ -29,7 +29,14 @@ public class ReviewController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Review> getReviewById(@PathVariable Long id) {
-        return new ResponseEntity<>(reviewServiceImpl.read(id), HttpStatus.OK);
+        try {
+            Review review = reviewServiceImpl.read(id);
+
+            return new ResponseEntity<>(review, HttpStatus.OK);
+        } catch (ServiceException e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
 //    @GetMapping("/dto/{id}")
@@ -41,9 +48,15 @@ public class ReviewController {
 
     @PostMapping()
     @CrossOrigin(origins = "http://localhost:4200/")
-    public Review saveReview(@RequestBody Review review) {
-        reviewServiceImpl.create(review);
-        return review;
+    public ResponseEntity<?> saveReview(@RequestBody Review review) {
+        try {
+            reviewServiceImpl.create(review);
+
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (ServiceException e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>(HttpStatus.FORBIDDEN);
     }
 
     @PutMapping
@@ -54,13 +67,19 @@ public class ReviewController {
             return new ResponseEntity<>(updatedReview, HttpStatus.OK);
         } catch (ServiceException e) {
             e.printStackTrace();
-            return new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
         }
+        return new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
     }
 
     @DeleteMapping("/rm/{id}")
-    public void deleteReview(@PathVariable Long id) {
-        reviewServiceImpl.delete(id);
-    }
+    public ResponseEntity<?> deleteReview(@PathVariable Long id) {
+        try {
+            reviewServiceImpl.delete(id);
 
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (ServiceException e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+    }
 }
