@@ -15,10 +15,7 @@ import java.util.List;
 @ToString
 @Entity
 @Table(name = "instructors")
-public class Instructor {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class Instructor extends BaseEntity<Long>{
     @Column(name="instructor_name")
     private String instructorName;
     @Column(name="instructor_surname")

@@ -11,10 +11,7 @@ import javax.persistence.*;
 @ToString
 @Entity
 @Table(name="reviews")
-public class Review {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class Review extends BaseEntity<Long>{
     @Column(name="instructor_review")
     private String instructorReview;
     @Column(name="experience_rating")

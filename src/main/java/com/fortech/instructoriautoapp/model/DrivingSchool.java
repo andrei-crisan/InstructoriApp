@@ -15,10 +15,7 @@ import java.util.List;
 @Entity
 //@Table(name = "driving_schools",
 //        uniqueConstraints=@UniqueConstraint(columnNames={"school_name", "school_address"}))
-public class DrivingSchool {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class DrivingSchool extends BaseEntity<Long> {
     @Column(name = "school_name")
     private String drivingSchoolName;
     @Column(name = "school_address")
