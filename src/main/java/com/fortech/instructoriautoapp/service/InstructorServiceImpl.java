@@ -6,6 +6,7 @@ import com.fortech.instructoriautoapp.model.DrivingSchool;
 import com.fortech.instructoriautoapp.model.Instructor;
 import com.fortech.instructoriautoapp.repository.DrivingSchoolRepository;
 import com.fortech.instructoriautoapp.repository.InstructorRepository;
+import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,12 +14,17 @@ import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
+@NoArgsConstructor
 @Service
 public class InstructorServiceImpl implements iService<Instructor> {
-    @Autowired
     private InstructorRepository instructorRepository;
-    @Autowired
     private DrivingSchoolRepository drivingSchoolRepository;
+
+    @Autowired
+    public InstructorServiceImpl(InstructorRepository instructorRepository, DrivingSchoolRepository drivingSchoolRepository) {
+        this.instructorRepository = instructorRepository;
+        this.drivingSchoolRepository = drivingSchoolRepository;
+    }
 
     @Override
     public void create(Instructor entity) {
@@ -35,7 +41,7 @@ public class InstructorServiceImpl implements iService<Instructor> {
                     entity.getDrivingSchool().getDrivingSchoolName(),
                     entity.getDrivingSchool().getDrivingSchoolAddress());
 
-            if(drivingSchoolToBeFound.isPresent()){
+            if (drivingSchoolToBeFound.isPresent()) {
                 entity.setDrivingSchool(drivingSchoolToBeFound.get());
             }
 

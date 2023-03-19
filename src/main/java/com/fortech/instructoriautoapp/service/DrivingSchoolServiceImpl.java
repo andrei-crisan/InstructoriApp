@@ -5,6 +5,7 @@ import com.fortech.instructoriautoapp.exceptions.ServiceException;
 import com.fortech.instructoriautoapp.model.DrivingSchool;
 import com.fortech.instructoriautoapp.repository.DrivingSchoolRepository;
 import com.fortech.instructoriautoapp.repository.Repository;
+import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,10 +13,16 @@ import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
+@NoArgsConstructor
 @Service
 public class DrivingSchoolServiceImpl implements iService<DrivingSchool> {
-    @Autowired
+
     private DrivingSchoolRepository drivingSchoolRepository;
+
+    @Autowired
+    public DrivingSchoolServiceImpl(DrivingSchoolRepository drivingSchoolRepository) {
+        this.drivingSchoolRepository = drivingSchoolRepository;
+    }
 
     @Override
     public void create(DrivingSchool entity) {

@@ -17,13 +17,16 @@ import java.util.Optional;
 
 @Service
 public class ReviewServiceImpl implements iService<Review> {
-    @Autowired
     private ReviewRepository reviewRepository;
+    private InstructorRepository instructorRepository;
+    private DrivingSchoolRepository drivingSchoolRepository;
 
     @Autowired
-    private InstructorRepository instructorRepository;
-    @Autowired
-    private DrivingSchoolRepository drivingSchoolRepository;
+    public ReviewServiceImpl(ReviewRepository reviewRepository, InstructorRepository instructorRepository, DrivingSchoolRepository drivingSchoolRepository) {
+        this.reviewRepository = reviewRepository;
+        this.instructorRepository = instructorRepository;
+        this.drivingSchoolRepository = drivingSchoolRepository;
+    }
 
     @Override
     @Transactional
@@ -33,16 +36,16 @@ public class ReviewServiceImpl implements iService<Review> {
 
         //DB_CHECK
         Optional<Instructor> instructorToBeFound = instructorRepository.findByInstructorNameAndInstructorSurnameAndDrivingSchool_DrivingSchoolNameAndDrivingSchool_DrivingSchoolAddress(
-                        entity.getInstructor().getInstructorName(),
-                        entity.getInstructor().getInstructorSurname(),
-                        entity.getInstructor().getDrivingSchool().getDrivingSchoolName(),
-                        entity.getInstructor().getDrivingSchool().getDrivingSchoolAddress());
+                entity.getInstructor().getInstructorName(),
+                entity.getInstructor().getInstructorSurname(),
+                entity.getInstructor().getDrivingSchool().getDrivingSchoolName(),
+                entity.getInstructor().getDrivingSchool().getDrivingSchoolAddress());
 
         Optional<DrivingSchool> drivingSchoolToBeFoundOrNot = drivingSchoolRepository.findDrivingSchoolByDrivingSchoolNameAndDrivingSchoolAddress(
                 entity.getInstructor().getDrivingSchool().getDrivingSchoolName(),
                 entity.getInstructor().getDrivingSchool().getDrivingSchoolAddress());
 
-        //check if the school already exits - do not add a new school it's already in the DB;
+        //check if the school already exits - do not add a new school it's already in the DB, take the one from the DB;
         drivingSchoolToBeFoundOrNot.ifPresent( //Todo: Verificare conditie, potentiele problem.
                 drivingSchool -> entity.getInstructor().setDrivingSchool(drivingSchool));
 
@@ -50,7 +53,7 @@ public class ReviewServiceImpl implements iService<Review> {
         if (instructorToBeFound.isPresent()) {
             entity.setInstructor(instructorToBeFound.get());
             instructorToBeFound.get().getReviews().add(entity);
-        } else{
+        } else {
             reviewRepository.save(entity);
         }
 
