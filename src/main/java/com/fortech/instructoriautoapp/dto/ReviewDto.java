@@ -2,16 +2,18 @@ package com.fortech.instructoriautoapp.dto;
 
 import lombok.*;
 
-@AllArgsConstructor
 @NoArgsConstructor
-@ToString
+@AllArgsConstructor
 @Getter
 @Setter
-public class ReviewDto {
-    private String nameInstructor;
-    private String surnameInstructor;
-    private String reviewInstructor;
-    private Integer reviewRating;
+@Builder
+public class ReviewDto extends BaseDto<Long>{
+    private String instructorReview;
+    private Integer experienceRating;
+    private InstructorDto instructor;
+//    private String instructorName;
+//    private String instructorSurname;
+//    private String drivingSchoolName;
+//    private String drivingSchoolAddress;
 
-    //Todo: preluare si id - nu va fi afisat in front; poate alta ordine fielduri;
 }

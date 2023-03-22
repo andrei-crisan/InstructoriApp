@@ -33,7 +33,7 @@ public class InstructorServiceImpl implements iService<Instructor> {
                 entity.getInstructorSurname(),
                 entity.getDrivingSchool().getDrivingSchoolName(),
                 entity.getDrivingSchool().getDrivingSchoolAddress());
-        //Todo: Daca instructor nu exista, dar exista scoala, atunci atribuie scoala!s
+        //Todo: Daca instructor nu exista, dar exista scoala, atunci atribuire scoala!s
         if (instructorToBeFound.isPresent()) {
             throw new ServiceException(ExceptionMessages.INSTRUCTOR_WITH_THE_GIVEN_IDENTIFIERS_ALREADY_EXISTS.errorMessage);
         } else {
@@ -71,14 +71,17 @@ public class InstructorServiceImpl implements iService<Instructor> {
                 new ServiceException(ExceptionMessages.INSTRUCTOR_WITH_GIVEN_ID_DOES_NOT_EXIST.errorMessage));
 
         Optional<DrivingSchool> drivingSchoolToBeFound =
-                drivingSchoolRepository.findById(entity.getDrivingSchool().getId());
+                drivingSchoolRepository.findDrivingSchoolByDrivingSchoolNameAndDrivingSchoolAddress(
+                        entity.getDrivingSchool().getDrivingSchoolName(),
+                        entity.getDrivingSchool().getDrivingSchoolAddress());
 
         instructorToBeUpdated.setInstructorName(entity.getInstructorName());
         instructorToBeUpdated.setInstructorSurname(entity.getInstructorSurname());
+
         if (drivingSchoolToBeFound.isPresent()) {
             instructorToBeUpdated.setDrivingSchool(drivingSchoolToBeFound.get());
         } else {
-            instructorToBeUpdated.setDrivingSchool(drivingSchoolToBeFound.get());
+            instructorToBeUpdated.setDrivingSchool(entity.getDrivingSchool());
         }
 
         return instructorToBeUpdated;

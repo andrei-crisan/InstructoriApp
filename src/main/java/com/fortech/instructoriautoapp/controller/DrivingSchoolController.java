@@ -1,5 +1,6 @@
 package com.fortech.instructoriautoapp.controller;
 
+import com.fortech.instructoriautoapp.dto.DrivingSchoolDto;
 import com.fortech.instructoriautoapp.exceptions.ServiceException;
 import com.fortech.instructoriautoapp.model.DrivingSchool;
 import com.fortech.instructoriautoapp.service.DrivingSchoolServiceImpl;
@@ -12,6 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/schools")
+@CrossOrigin(origins = "http://localhost:4200/")
 public class DrivingSchoolController {
     @Autowired
     private DrivingSchoolServiceImpl drivingSchoolServiceImpl;
@@ -34,7 +36,6 @@ public class DrivingSchoolController {
     }
 
     @PostMapping()
-    @CrossOrigin(origins = "http://localhost:4200/")
     public ResponseEntity<?> saveDrivingSchool(@RequestBody DrivingSchool drivingSchool) {
         try {
             drivingSchoolServiceImpl.create(drivingSchool);

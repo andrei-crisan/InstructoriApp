@@ -81,7 +81,6 @@ public class ReviewServiceImpl implements iService<Review> {
         Review updatedReview = reviewToBeFound.orElseThrow(() ->
                 new ServiceException(ExceptionMessages.REVIEW_WITH_GIVEN_ID_DOES_NOT_EXIST.errorMessage));
 
-        updatedReview.setInstructor(entity.getInstructor());
         updatedReview.setInstructorReview(entity.getInstructorReview());
         updatedReview.setExperienceRating(entity.getExperienceRating());
 

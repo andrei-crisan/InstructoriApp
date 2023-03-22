@@ -13,6 +13,7 @@ import java.util.List;
 @Setter
 @ToString
 @Entity
+@Builder
 //@Table(name = "driving_schools",
 //        uniqueConstraints=@UniqueConstraint(columnNames={"school_name", "school_address"}))
 public class DrivingSchool extends BaseEntity<Long> {

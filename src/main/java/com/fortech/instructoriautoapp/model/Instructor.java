@@ -1,13 +1,16 @@
 package com.fortech.instructoriautoapp.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -15,6 +18,9 @@ import java.util.List;
 @ToString
 @Entity
 @Table(name = "instructors")
+//@JsonIdentityInfo(
+//        generator = ObjectIdGenerators.PropertyGenerator.class,
+//        property = "id")
 public class Instructor extends BaseEntity<Long>{
     @Column(name="instructor_name")
     private String instructorName;
