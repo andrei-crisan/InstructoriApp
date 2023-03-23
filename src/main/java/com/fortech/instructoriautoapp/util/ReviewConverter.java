@@ -8,7 +8,7 @@ import com.fortech.instructoriautoapp.model.Review;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ReviewConverter extends BaseConverter<Review, ReviewDto>{
+public class ReviewConverter extends BaseConverter<Review, ReviewDto> {
 
     @Override
     public Review convertDtoToModel(ReviewDto dto) {
@@ -30,6 +30,7 @@ public class ReviewConverter extends BaseConverter<Review, ReviewDto>{
                 .instructor(instructor)
                 .build();
         review.setId(dto.getId());
+
         return review;
     }
 

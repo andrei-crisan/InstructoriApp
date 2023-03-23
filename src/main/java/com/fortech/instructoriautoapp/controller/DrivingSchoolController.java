@@ -15,8 +15,12 @@ import java.util.List;
 @RestController
 @RequestMapping("/schools")
 public class DrivingSchoolController {
-    @Autowired
     private DrivingSchoolServiceImpl drivingSchoolServiceImpl;
+
+    @Autowired
+    public DrivingSchoolController(DrivingSchoolServiceImpl drivingSchoolServiceImpl) {
+        this.drivingSchoolServiceImpl = drivingSchoolServiceImpl;
+    }
 
     @GetMapping()
     public List<DrivingSchool> getAllDrivingSchools() {

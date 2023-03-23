@@ -26,6 +26,4 @@ public class DrivingSchool extends BaseEntity<Long> {
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     private List<Instructor> instructors = new ArrayList<>();
-
-
 }

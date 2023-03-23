@@ -16,5 +16,4 @@ public class InstructorDto extends BaseDto<Long>{
     private String drivingSchoolName;
     private String drivingSchoolAddress;
     private List<Review> reviews;
-
 }

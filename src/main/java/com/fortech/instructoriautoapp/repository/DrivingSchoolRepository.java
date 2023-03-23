@@ -8,5 +8,6 @@ import java.util.Optional;
 @Component
 public interface DrivingSchoolRepository extends Repository<DrivingSchool, Long> {
     Optional<DrivingSchool> findDrivingSchoolByDrivingSchoolNameAndDrivingSchoolAddress(String drivingSchoolName, String drivingSchoolAddress);
+
     boolean existsByDrivingSchoolNameAndDrivingSchoolAddress(String drivingSchoolName, String drivingSchoolAddress);
 }

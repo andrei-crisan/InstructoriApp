@@ -1,6 +1,5 @@
 package com.fortech.instructoriautoapp.repository;
 
-import com.fortech.instructoriautoapp.model.Instructor;
 import com.fortech.instructoriautoapp.model.Review;
 import org.springframework.stereotype.Component;
 

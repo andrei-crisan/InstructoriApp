@@ -17,10 +17,15 @@ import java.util.List;
 @RestController
 @RequestMapping("/instructors")
 public class InstructorController {
-    @Autowired
+
     private InstructorServiceImpl instructorServiceImpl;
-    @Autowired
     private InstructorConverter instructorConverter;
+
+    @Autowired
+    public InstructorController(InstructorServiceImpl instructorServiceImpl, InstructorConverter instructorConverter) {
+        this.instructorServiceImpl = instructorServiceImpl;
+        this.instructorConverter = instructorConverter;
+    }
 
     @GetMapping()
     public List<InstructorDto> getAllInstructors() {
@@ -42,7 +47,6 @@ public class InstructorController {
     }
 
     @PostMapping()
-    @CrossOrigin(origins = "http://localhost:4200/")
     public ResponseEntity<?> saveInstructor(@RequestBody InstructorDto instructorDto) {
         Instructor instructor = instructorConverter.convertDtoToModel(instructorDto);
 
