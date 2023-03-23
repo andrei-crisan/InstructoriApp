@@ -15,9 +15,6 @@ import java.util.List;
 @ToString
 @Entity
 @Table(name = "instructors")
-//@JsonIdentityInfo(
-//        generator = ObjectIdGenerators.PropertyGenerator.class,
-//        property = "id")
 public class Instructor extends BaseEntity<Long> {
     @Column(name = "instructor_name")
     private String instructorName;

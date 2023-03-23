@@ -31,11 +31,10 @@ public class InstructorController {
 
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @GetMapping()
-    public List<InstructorDto> getAllInstructors() {
+    public ResponseEntity<List<InstructorDto>> getAllInstructors() {
         List<Instructor> instructorsList = instructorServiceImpl.readAll();
 
-        List<InstructorDto> instructorDtos = instructorConverter.convertModelsToDtos(instructorsList);
-        return instructorDtos;
+        return new ResponseEntity<>(instructorConverter.convertModelsToDtos(instructorsList), HttpStatus.OK);
     }
 
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
