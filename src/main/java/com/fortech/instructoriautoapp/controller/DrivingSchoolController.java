@@ -26,8 +26,8 @@ public class DrivingSchoolController {
 
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @GetMapping()
-    public List<DrivingSchool> getAllDrivingSchools() {
-        return drivingSchoolServiceImpl.readAll();
+    public ResponseEntity<List<DrivingSchool>> getAllDrivingSchools() {
+        return new ResponseEntity<>(drivingSchoolServiceImpl.readAll(), HttpStatus.OK);
     }
 
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
