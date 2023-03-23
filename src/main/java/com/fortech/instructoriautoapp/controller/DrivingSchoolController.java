@@ -7,6 +7,7 @@ import com.fortech.instructoriautoapp.service.DrivingSchoolServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -47,6 +48,7 @@ public class DrivingSchoolController {
         return new ResponseEntity<>(HttpStatus.FORBIDDEN);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/rm/{id}")
     public ResponseEntity<?> deleteDrivingSchool(@PathVariable Long id) {
         try {
