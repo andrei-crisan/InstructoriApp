@@ -69,7 +69,7 @@ public class ReviewController {
         }
         return new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
     }
-
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/rm/{id}")
     public ResponseEntity<?> deleteReview(@PathVariable Long id) {
         try {
