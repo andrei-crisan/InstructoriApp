@@ -1,13 +1,10 @@
 package com.fortech.instructoriautoapp.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.List;
 
 @Builder
@@ -21,10 +18,10 @@ import java.util.List;
 //@JsonIdentityInfo(
 //        generator = ObjectIdGenerators.PropertyGenerator.class,
 //        property = "id")
-public class Instructor extends BaseEntity<Long>{
-    @Column(name="instructor_name")
+public class Instructor extends BaseEntity<Long> {
+    @Column(name = "instructor_name")
     private String instructorName;
-    @Column(name="instructor_surname")
+    @Column(name = "instructor_surname")
     private String instructorSurname;
     @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE}, mappedBy = "instructor")
     @JsonManagedReference
@@ -37,13 +34,4 @@ public class Instructor extends BaseEntity<Long>{
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     private DrivingSchool drivingSchool;
-
-    //Todo: REMOVE ONE ITEM FROM LIST, METHOD, IN FIECARE ENTITATE.
-    ///Todo: METODA PENTRU CONCATENARE LISTA VECHE CU LISTA NOUA
-
-    //rescriere metoda pentru comparatii obiecte la adaugare.
-    public boolean equals(Instructor instructor) {
-        return this.instructorName.equals(instructor.instructorName) &&
-                this.instructorSurname.equals(instructor.instructorSurname);
-    }
 }

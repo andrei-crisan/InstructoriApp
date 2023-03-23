@@ -6,7 +6,7 @@ import com.fortech.instructoriautoapp.model.Instructor;
 import org.springframework.stereotype.Component;
 
 @Component
-public class InstructorConverter extends BaseConverter<Instructor, InstructorDto>{
+public class InstructorConverter extends BaseConverter<Instructor, InstructorDto> {
     @Override
     public Instructor convertDtoToModel(InstructorDto dto) {
         DrivingSchool drivingSchool = DrivingSchool.builder()
@@ -14,7 +14,6 @@ public class InstructorConverter extends BaseConverter<Instructor, InstructorDto
                 .drivingSchoolAddress(dto.getDrivingSchoolAddress())
                 .build();
         //Todo: Album ID?
-
 
         Instructor instructor = Instructor.builder()
                 .instructorName(dto.getInstructorName())
@@ -39,6 +38,5 @@ public class InstructorConverter extends BaseConverter<Instructor, InstructorDto
         instructorDto.setId(instructor.getId());
 
         return instructorDto;
-
     }
 }

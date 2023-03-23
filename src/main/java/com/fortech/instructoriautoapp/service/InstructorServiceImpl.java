@@ -6,6 +6,7 @@ import com.fortech.instructoriautoapp.model.DrivingSchool;
 import com.fortech.instructoriautoapp.model.Instructor;
 import com.fortech.instructoriautoapp.repository.DrivingSchoolRepository;
 import com.fortech.instructoriautoapp.repository.InstructorRepository;
+import com.fortech.instructoriautoapp.validators.Validator;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,11 +20,13 @@ import java.util.Optional;
 public class InstructorServiceImpl implements iService<Instructor> {
     private InstructorRepository instructorRepository;
     private DrivingSchoolRepository drivingSchoolRepository;
+    private Validator<Instructor> instructorValidator;
 
     @Autowired
-    public InstructorServiceImpl(InstructorRepository instructorRepository, DrivingSchoolRepository drivingSchoolRepository) {
+    public InstructorServiceImpl(InstructorRepository instructorRepository, DrivingSchoolRepository drivingSchoolRepository, Validator<Instructor> instructorValidator) {
         this.instructorRepository = instructorRepository;
         this.drivingSchoolRepository = drivingSchoolRepository;
+        this.instructorValidator = instructorValidator;
     }
 
     @Override
@@ -33,7 +36,7 @@ public class InstructorServiceImpl implements iService<Instructor> {
                 entity.getInstructorSurname(),
                 entity.getDrivingSchool().getDrivingSchoolName(),
                 entity.getDrivingSchool().getDrivingSchoolAddress());
-        //Todo: Daca instructor nu exista, dar exista scoala, atunci atribuire scoala!s
+
         if (instructorToBeFound.isPresent()) {
             throw new ServiceException(ExceptionMessages.INSTRUCTOR_WITH_THE_GIVEN_IDENTIFIERS_ALREADY_EXISTS.errorMessage);
         } else {
@@ -44,7 +47,7 @@ public class InstructorServiceImpl implements iService<Instructor> {
             if (drivingSchoolToBeFound.isPresent()) {
                 entity.setDrivingSchool(drivingSchoolToBeFound.get());
             }
-
+            instructorValidator.validate(entity);
             instructorRepository.save(entity);
         }
     }

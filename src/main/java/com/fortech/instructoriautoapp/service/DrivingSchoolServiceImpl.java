@@ -4,7 +4,8 @@ import com.fortech.instructoriautoapp.exceptions.ExceptionMessages;
 import com.fortech.instructoriautoapp.exceptions.ServiceException;
 import com.fortech.instructoriautoapp.model.DrivingSchool;
 import com.fortech.instructoriautoapp.repository.DrivingSchoolRepository;
-import com.fortech.instructoriautoapp.repository.Repository;
+import com.fortech.instructoriautoapp.validators.DrivingSchooValidator;
+import com.fortech.instructoriautoapp.validators.Validator;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,20 +17,22 @@ import java.util.Optional;
 @NoArgsConstructor
 @Service
 public class DrivingSchoolServiceImpl implements iService<DrivingSchool> {
-
     private DrivingSchoolRepository drivingSchoolRepository;
+    private Validator<DrivingSchool> drivingSchoolValidator;
 
     @Autowired
-    public DrivingSchoolServiceImpl(DrivingSchoolRepository drivingSchoolRepository) {
+    public DrivingSchoolServiceImpl(DrivingSchoolRepository drivingSchoolRepository, DrivingSchooValidator drivingSchoolValidator) {
         this.drivingSchoolRepository = drivingSchoolRepository;
+        this.drivingSchoolValidator = drivingSchoolValidator;
     }
 
     @Override
     public void create(DrivingSchool entity) {
         boolean entityExistsInDb = drivingSchoolRepository.existsByDrivingSchoolNameAndDrivingSchoolAddress(entity.getDrivingSchoolName(), entity.getDrivingSchoolAddress());
-        if(entityExistsInDb){
-           throw new ServiceException(ExceptionMessages.DRIVING_SCHOOL_WITH_GIVEN_IDENTIFIERS_ALREADY_EXISTS.errorMessage);
+        if (entityExistsInDb) {
+            throw new ServiceException(ExceptionMessages.DRIVING_SCHOOL_WITH_GIVEN_IDENTIFIERS_ALREADY_EXISTS.errorMessage);
         }
+        drivingSchoolValidator.validate(entity);
         drivingSchoolRepository.save(entity);
     }
 
@@ -55,7 +58,6 @@ public class DrivingSchoolServiceImpl implements iService<DrivingSchool> {
         DrivingSchool drivingSchoolFoundOrNot = scoalaToBeFound.orElseThrow(() ->
                 new ServiceException(ExceptionMessages.DRIVING_SCHOOL_WITH_GIVEN_ID_DOES_NOT_EXIST.errorMessage));
 
-        //Todo:Atentie, aici folosim id la update citire scoala in cod
         drivingSchoolFoundOrNot.setDrivingSchoolName(entity.getDrivingSchoolName());
         drivingSchoolFoundOrNot.setDrivingSchoolAddress(entity.getDrivingSchoolAddress());
 

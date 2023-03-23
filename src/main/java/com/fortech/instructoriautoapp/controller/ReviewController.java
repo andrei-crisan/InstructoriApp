@@ -2,9 +2,10 @@ package com.fortech.instructoriautoapp.controller;
 
 import com.fortech.instructoriautoapp.dto.ReviewDto;
 import com.fortech.instructoriautoapp.exceptions.ServiceException;
+import com.fortech.instructoriautoapp.exceptions.ValidationException;
 import com.fortech.instructoriautoapp.model.Review;
 import com.fortech.instructoriautoapp.service.ReviewServiceImpl;
-import com.fortech.instructoriautoapp.util.DtoConverter;
+import com.fortech.instructoriautoapp.service.iService;
 import com.fortech.instructoriautoapp.util.ReviewConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,14 +19,14 @@ import java.util.List;
 @RestController
 @RequestMapping("/reviews")
 public class ReviewController {
-    //TODO: remove Field injection from controllers
-    @Autowired
-    private ReviewServiceImpl reviewServiceImpl;
+    private iService<Review> reviewServiceImpl;
+    private ReviewConverter reviewConverter;
 
     @Autowired
-    private DtoConverter dtoConverter;
-    @Autowired
-    private ReviewConverter reviewConverter;
+    public ReviewController(ReviewServiceImpl reviewServiceImpl, ReviewConverter reviewConverter) {
+        this.reviewServiceImpl = reviewServiceImpl;
+        this.reviewConverter = reviewConverter;
+    }
 
     @PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
     @GetMapping()
@@ -52,7 +53,7 @@ public class ReviewController {
             reviewServiceImpl.create(review);
 
             return new ResponseEntity<>(HttpStatus.OK);
-        } catch (ServiceException e) {
+        } catch (ServiceException | ValidationException e) {
             e.printStackTrace();
         }
         return new ResponseEntity<>(HttpStatus.FORBIDDEN);

@@ -1,6 +1,6 @@
 package com.fortech.instructoriautoapp.exceptions;
 
-public class ServiceException extends RuntimeException{
+public class ServiceException extends RuntimeException {
     public ServiceException() {
     }
 

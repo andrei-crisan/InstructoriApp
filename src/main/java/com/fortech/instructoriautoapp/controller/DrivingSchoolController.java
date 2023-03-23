@@ -1,8 +1,10 @@
 package com.fortech.instructoriautoapp.controller;
 
 import com.fortech.instructoriautoapp.exceptions.ServiceException;
+import com.fortech.instructoriautoapp.exceptions.ValidationException;
 import com.fortech.instructoriautoapp.model.DrivingSchool;
 import com.fortech.instructoriautoapp.service.DrivingSchoolServiceImpl;
+import com.fortech.instructoriautoapp.service.iService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,8 +17,12 @@ import java.util.List;
 @RestController
 @RequestMapping("/schools")
 public class DrivingSchoolController {
+    private iService<DrivingSchool> drivingSchoolServiceImpl;
+
     @Autowired
-    private DrivingSchoolServiceImpl drivingSchoolServiceImpl;
+    public DrivingSchoolController(DrivingSchoolServiceImpl drivingSchoolServiceImpl) {
+        this.drivingSchoolServiceImpl = drivingSchoolServiceImpl;
+    }
 
     @GetMapping()
     public List<DrivingSchool> getAllDrivingSchools() {
@@ -41,7 +47,7 @@ public class DrivingSchoolController {
             drivingSchoolServiceImpl.create(drivingSchool);
 
             return new ResponseEntity<>(HttpStatus.OK);
-        } catch (ServiceException e) {
+        } catch (ServiceException | ValidationException e) {
             e.printStackTrace();
         }
         return new ResponseEntity<>(HttpStatus.FORBIDDEN);

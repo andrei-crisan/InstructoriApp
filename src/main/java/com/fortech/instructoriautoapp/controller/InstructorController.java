@@ -2,8 +2,10 @@ package com.fortech.instructoriautoapp.controller;
 
 import com.fortech.instructoriautoapp.dto.InstructorDto;
 import com.fortech.instructoriautoapp.exceptions.ServiceException;
+import com.fortech.instructoriautoapp.exceptions.ValidationException;
 import com.fortech.instructoriautoapp.model.Instructor;
 import com.fortech.instructoriautoapp.service.InstructorServiceImpl;
+import com.fortech.instructoriautoapp.service.iService;
 import com.fortech.instructoriautoapp.util.InstructorConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,10 +19,15 @@ import java.util.List;
 @RestController
 @RequestMapping("/instructors")
 public class InstructorController {
-    @Autowired
-    private InstructorServiceImpl instructorServiceImpl;
-    @Autowired
+
+    private iService<Instructor> instructorServiceImpl;
     private InstructorConverter instructorConverter;
+
+    @Autowired
+    public InstructorController(InstructorServiceImpl instructorServiceImpl, InstructorConverter instructorConverter) {
+        this.instructorServiceImpl = instructorServiceImpl;
+        this.instructorConverter = instructorConverter;
+    }
 
     @GetMapping()
     public List<InstructorDto> getAllInstructors() {
@@ -42,14 +49,13 @@ public class InstructorController {
     }
 
     @PostMapping()
-    @CrossOrigin(origins = "http://localhost:4200/")
     public ResponseEntity<?> saveInstructor(@RequestBody InstructorDto instructorDto) {
         Instructor instructor = instructorConverter.convertDtoToModel(instructorDto);
 
         try {
             instructorServiceImpl.create(instructor);
             new ResponseEntity<>(HttpStatus.OK);
-        } catch (ServiceException e) {
+        } catch (ServiceException | ValidationException e) {
             e.printStackTrace();
         }
         return new ResponseEntity<>(HttpStatus.FORBIDDEN);
