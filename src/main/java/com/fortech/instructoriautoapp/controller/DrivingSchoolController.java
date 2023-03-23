@@ -1,6 +1,5 @@
 package com.fortech.instructoriautoapp.controller;
 
-import com.fortech.instructoriautoapp.dto.DrivingSchoolDto;
 import com.fortech.instructoriautoapp.exceptions.ServiceException;
 import com.fortech.instructoriautoapp.model.DrivingSchool;
 import com.fortech.instructoriautoapp.service.DrivingSchoolServiceImpl;
@@ -12,9 +11,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/schools")
-@CrossOrigin(origins = "http://localhost:4200/")
 public class DrivingSchoolController {
     @Autowired
     private DrivingSchoolServiceImpl drivingSchoolServiceImpl;

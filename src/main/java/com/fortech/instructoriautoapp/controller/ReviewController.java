@@ -14,9 +14,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/reviews")
-@CrossOrigin(origins = "http://localhost:4200/")
 public class ReviewController {
     //TODO: remove Field injection from controllers
     @Autowired
