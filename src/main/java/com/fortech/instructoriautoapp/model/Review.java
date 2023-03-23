@@ -20,7 +20,7 @@ public class Review extends BaseEntity<Long> {
     @Column(name = "instructor_review")
     private String instructorReview;
     @Column(name = "experience_rating")
-    private Integer experienceRating;
+    private int experienceRating;
     @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JsonBackReference
     private Instructor instructor;

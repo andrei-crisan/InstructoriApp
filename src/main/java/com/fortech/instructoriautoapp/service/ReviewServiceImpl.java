@@ -8,6 +8,7 @@ import com.fortech.instructoriautoapp.model.Review;
 import com.fortech.instructoriautoapp.repository.DrivingSchoolRepository;
 import com.fortech.instructoriautoapp.repository.InstructorRepository;
 import com.fortech.instructoriautoapp.repository.ReviewRepository;
+import com.fortech.instructoriautoapp.validators.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,12 +21,14 @@ public class ReviewServiceImpl implements iService<Review> {
     private ReviewRepository reviewRepository;
     private InstructorRepository instructorRepository;
     private DrivingSchoolRepository drivingSchoolRepository;
+    private Validator<Review> reviewValidator;
 
     @Autowired
-    public ReviewServiceImpl(ReviewRepository reviewRepository, InstructorRepository instructorRepository, DrivingSchoolRepository drivingSchoolRepository) {
+    public ReviewServiceImpl(ReviewRepository reviewRepository, InstructorRepository instructorRepository, DrivingSchoolRepository drivingSchoolRepository, Validator<Review> reviewValidator) {
         this.reviewRepository = reviewRepository;
         this.instructorRepository = instructorRepository;
         this.drivingSchoolRepository = drivingSchoolRepository;
+        this.reviewValidator = reviewValidator;
     }
 
     @Override
@@ -54,6 +57,7 @@ public class ReviewServiceImpl implements iService<Review> {
             entity.setInstructor(instructorToBeFound.get());
             instructorToBeFound.get().getReviews().add(entity);
         } else {
+            reviewValidator.validate(entity);
             reviewRepository.save(entity);
         }
     }
