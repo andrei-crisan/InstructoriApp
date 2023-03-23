@@ -24,11 +24,13 @@ public class DrivingSchoolController {
         this.drivingSchoolServiceImpl = drivingSchoolServiceImpl;
     }
 
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @GetMapping()
     public List<DrivingSchool> getAllDrivingSchools() {
         return drivingSchoolServiceImpl.readAll();
     }
 
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @GetMapping("/{id}")
     public ResponseEntity<DrivingSchool> getDrivingSchoolById(@PathVariable Long id) {
         try {
@@ -41,6 +43,7 @@ public class DrivingSchoolController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @PostMapping()
     public ResponseEntity<?> saveDrivingSchool(@RequestBody DrivingSchool drivingSchool) {
         try {
@@ -66,6 +69,7 @@ public class DrivingSchoolController {
         return new ResponseEntity<>(HttpStatus.FORBIDDEN);
     }
 
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @PutMapping
     public ResponseEntity<DrivingSchool> updateDrivingSchool(@RequestBody DrivingSchool drivingSchool) {
         try {

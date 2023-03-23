@@ -28,13 +28,14 @@ public class ReviewController {
         this.reviewConverter = reviewConverter;
     }
 
-    @PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @GetMapping()
     public ResponseEntity<List<ReviewDto>> getAllReviews() {
         List<Review> reviews = reviewServiceImpl.readAll();
         return new ResponseEntity<>(reviewConverter.convertModelsToDtos(reviews), HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @GetMapping("/{id}")
     public ResponseEntity<ReviewDto> getReviewById(@PathVariable Long id) {
         try {
@@ -46,6 +47,7 @@ public class ReviewController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @PostMapping()
     public ResponseEntity<?> saveReview(@RequestBody ReviewDto reviewDto) {
         try {
@@ -59,6 +61,7 @@ public class ReviewController {
         return new ResponseEntity<>(HttpStatus.FORBIDDEN);
     }
 
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @PutMapping
     public ResponseEntity<Review> updateReview(@RequestBody Review review) {
         try {
@@ -70,6 +73,7 @@ public class ReviewController {
         }
         return new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
     }
+
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/rm/{id}")
     public ResponseEntity<?> deleteReview(@PathVariable Long id) {

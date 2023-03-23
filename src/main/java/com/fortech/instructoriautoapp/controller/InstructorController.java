@@ -29,6 +29,7 @@ public class InstructorController {
         this.instructorConverter = instructorConverter;
     }
 
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @GetMapping()
     public List<InstructorDto> getAllInstructors() {
         List<Instructor> instructorsList = instructorServiceImpl.readAll();
@@ -37,6 +38,7 @@ public class InstructorController {
         return instructorDtos;
     }
 
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @GetMapping("/{id}")
     public ResponseEntity<InstructorDto> getInstructorById(@PathVariable Long id) {
         try {
@@ -48,6 +50,7 @@ public class InstructorController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @PostMapping()
     public ResponseEntity<?> saveInstructor(@RequestBody InstructorDto instructorDto) {
         Instructor instructor = instructorConverter.convertDtoToModel(instructorDto);
@@ -72,7 +75,7 @@ public class InstructorController {
         }
         return new ResponseEntity<>(HttpStatus.FORBIDDEN);
     }
-
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @PutMapping
     public ResponseEntity<Instructor> updateInstructor(@RequestBody InstructorDto instructorDto) {
         Instructor instructor = instructorConverter.convertDtoToModel(instructorDto);
