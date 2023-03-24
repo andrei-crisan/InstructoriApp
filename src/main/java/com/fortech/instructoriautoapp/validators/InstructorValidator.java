@@ -20,7 +20,10 @@ public class InstructorValidator implements Validator<Instructor> {
             errors += "\nDriving school's name is less then 3 char.";
         }
         if (entity.getDrivingSchool().getDrivingSchoolAddress().length() < 3) {
-            errors += "\nDriving school's address is less then 3 char.";
+            errors += "\nDriving school's address is less then 3 char. ";
+        }
+        if (!entity.getDrivingSchool().getDrivingSchoolAddress().matches("[a-zA-Z-]+\\,\s\\w{2}")) {
+            errors += "\nThe address should be separated by comma-> localitate, judet";
         }
         if (!errors.isEmpty()) {
             throw new ValidationException(errors);
