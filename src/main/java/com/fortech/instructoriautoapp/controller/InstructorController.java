@@ -20,8 +20,8 @@ import java.util.List;
 @RequestMapping("/instructors")
 public class InstructorController {
 
-    private iService<Instructor> instructorServiceImpl;
-    private InstructorConverter instructorConverter;
+    private final iService<Instructor> instructorServiceImpl;
+    private final InstructorConverter instructorConverter;
 
     @Autowired
     public InstructorController(InstructorServiceImpl instructorServiceImpl, InstructorConverter instructorConverter) {

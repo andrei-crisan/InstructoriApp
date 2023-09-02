@@ -19,8 +19,8 @@ import java.util.List;
 @RestController
 @RequestMapping("/reviews")
 public class ReviewController {
-    private iService<Review> reviewServiceImpl;
-    private ReviewConverter reviewConverter;
+    private final iService<Review> reviewServiceImpl;
+    private final ReviewConverter reviewConverter;
 
     @Autowired
     public ReviewController(ReviewServiceImpl reviewServiceImpl, ReviewConverter reviewConverter) {

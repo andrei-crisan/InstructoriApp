@@ -1,6 +1,6 @@
 package com.fortech.instructoriautoapp.exceptions;
 
-public class ValidationException extends RuntimeException{
+public class ValidationException extends RuntimeException {
     public ValidationException() {
     }
 

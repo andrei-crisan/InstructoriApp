@@ -68,7 +68,7 @@ public class DrivingSchoolController {
         }
         return new ResponseEntity<>(HttpStatus.FORBIDDEN);
     }
-
+//Todo: vezi cu permisiunile
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @PutMapping
     public ResponseEntity<DrivingSchool> updateDrivingSchool(@RequestBody DrivingSchool drivingSchool) {

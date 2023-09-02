@@ -44,9 +44,8 @@ public class InstructorServiceImpl implements iService<Instructor> {
                     entity.getDrivingSchool().getDrivingSchoolName(),
                     entity.getDrivingSchool().getDrivingSchoolAddress());
 
-            if (drivingSchoolToBeFound.isPresent()) {
-                entity.setDrivingSchool(drivingSchoolToBeFound.get());
-            }
+            drivingSchoolToBeFound.ifPresent(entity::setDrivingSchool);
+
             instructorValidator.validate(entity);
             instructorRepository.save(entity);
         }
@@ -59,11 +58,8 @@ public class InstructorServiceImpl implements iService<Instructor> {
 
     @Override
     public Instructor read(Long entityId) {
-        Optional<Instructor> instructorToBeFound = instructorRepository.findById(entityId);
-        Instructor instructorFoundOrNot = instructorToBeFound.orElseThrow(() ->
+        return instructorRepository.findById(entityId).orElseThrow(() ->
                 new ServiceException(ExceptionMessages.INSTRUCTOR_WITH_GIVEN_ID_DOES_NOT_EXIST.errorMessage));
-
-        return instructorFoundOrNot;
     }
 
     @Override

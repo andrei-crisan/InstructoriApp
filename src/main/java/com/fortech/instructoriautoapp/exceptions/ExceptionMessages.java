@@ -10,7 +10,8 @@ public enum ExceptionMessages {
     DRIVING_SCHOOL_WITH_GIVEN_IDENTIFIERS_ALREADY_EXISTS("Driving school with the given name and address already exists."),
     DRIVING_SCHOOL_WITH_GIVEN_ID_DOES_NOT_EXIST("Driving school with the given id does not exist."),
     REVIEW_WITH_GIVEN_ID_DOES_NOT_EXIST("Review with the given id does not exist."),
-    REPOSITORY_NOT_FOUND("The given repository was not found: ");
+    REPOSITORY_NOT_FOUND("The given repository was not found: "),
+    ROLE_NOT_FOUND("The role is not found.");
 
     public final String errorMessage;
 }

@@ -18,10 +18,10 @@ import java.util.Optional;
 
 @Service
 public class ReviewServiceImpl implements iService<Review> {
-    private ReviewRepository reviewRepository;
-    private InstructorRepository instructorRepository;
-    private DrivingSchoolRepository drivingSchoolRepository;
-    private Validator<Review> reviewValidator;
+    private final ReviewRepository reviewRepository;
+    private final InstructorRepository instructorRepository;
+    private final DrivingSchoolRepository drivingSchoolRepository;
+    private final Validator<Review> reviewValidator;
 
     @Autowired
     public ReviewServiceImpl(ReviewRepository reviewRepository, InstructorRepository instructorRepository, DrivingSchoolRepository drivingSchoolRepository, Validator<Review> reviewValidator) {
@@ -34,10 +34,6 @@ public class ReviewServiceImpl implements iService<Review> {
     @Override
     @Transactional
     public void create(Review entity) {
-        //If the instructor from our review already exits, we are just adding the review to his list;
-        //Avoiding duplicate instructors;
-
-        //DB_CHECK
         Optional<Instructor> instructorToBeFound = instructorRepository.findByInstructorNameAndInstructorSurnameAndDrivingSchool_DrivingSchoolNameAndDrivingSchool_DrivingSchoolAddress(
                 entity.getInstructor().getInstructorName(),
                 entity.getInstructor().getInstructorSurname(),
@@ -48,11 +44,8 @@ public class ReviewServiceImpl implements iService<Review> {
                 entity.getInstructor().getDrivingSchool().getDrivingSchoolName(),
                 entity.getInstructor().getDrivingSchool().getDrivingSchoolAddress());
 
-        //check if the school already exits - do not add a new school it's already in the DB, take the one from the DB;
-        drivingSchoolToBeFoundOrNot.ifPresent( //Todo: Verificare conditie, potentiele problem.
-                drivingSchool -> entity.getInstructor().setDrivingSchool(drivingSchool));
+        drivingSchoolToBeFoundOrNot.ifPresent(drivingSchool -> entity.getInstructor().setDrivingSchool(drivingSchool));
 
-        //ADD the new review
         if (instructorToBeFound.isPresent()) {
             entity.setInstructor(instructorToBeFound.get());
             instructorToBeFound.get().getReviews().add(entity);
@@ -69,11 +62,8 @@ public class ReviewServiceImpl implements iService<Review> {
 
     @Override
     public Review read(Long entityId) {
-        Optional<Review> reviewToBeFound = reviewRepository.findById(entityId);
-
-        Review reviewFoundOrNot = reviewToBeFound.orElseThrow(() ->
-                new ServiceException(ExceptionMessages.REVIEW_WITH_GIVEN_ID_DOES_NOT_EXIST.errorMessage));
-        return reviewFoundOrNot;
+        return reviewRepository.findById(entityId).orElseThrow(()
+                -> new ServiceException(ExceptionMessages.REVIEW_WITH_GIVEN_ID_DOES_NOT_EXIST.errorMessage));
     }
 
     @Override

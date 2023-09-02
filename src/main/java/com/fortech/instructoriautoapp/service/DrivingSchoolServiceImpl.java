@@ -43,12 +43,8 @@ public class DrivingSchoolServiceImpl implements iService<DrivingSchool> {
 
     @Override
     public DrivingSchool read(Long entityId) {
-        Optional<DrivingSchool> drivingSchoolToBeFound = drivingSchoolRepository.findById(entityId);
-
-        DrivingSchool drivingSchoolFoundOrNot = drivingSchoolToBeFound.orElseThrow(() ->
+        return drivingSchoolRepository.findById(entityId).orElseThrow(() ->
                 new ServiceException(ExceptionMessages.DRIVING_SCHOOL_WITH_GIVEN_ID_DOES_NOT_EXIST.errorMessage));
-
-        return drivingSchoolFoundOrNot;
     }
 
     @Override
